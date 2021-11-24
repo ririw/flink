@@ -45,32 +45,34 @@ both the Python DataStream API and Python Table API.
 
 ## JAR Dependencies
 
-If third-party JARs are used, you can specify the JARs in the Python Table API as following:
+If third-party JARs are used, you can specify the JARs in the Python Table API as shown below.
+The path URLs have format `file:<absolute path>`. For example, to load jarfile at `/tmp/flink-avro-1.14.0.jar`,
+you should pass `file:/tmp/flink-avro-1.14.0.jar`.
 
 ```python
 # Specify a list of jar URLs via "pipeline.jars". The jars are separated by ";"
 # and will be uploaded to the cluster.
-# NOTE: Only local file URLs (start with "file://") are supported.
-table_env.get_config().get_configuration().set_string("pipeline.jars", "file:///my/jar/path/connector.jar;file:///my/jar/path/udf.jar")
+# NOTE: Only local file URLs (start with "file:/") are supported.
+table_env.get_config().get_configuration().set_string("pipeline.jars", "file:/my/jar/path/connector.jar;file:/my/jar/path/udf.jar")
 
 # Specify a list of URLs via "pipeline.classpaths". The URLs are separated by ";" 
 # and will be added to the classpath during job execution.
-# NOTE: The paths must specify a protocol (e.g. file://) and users should ensure that the URLs are accessible on both the client and the cluster.
-table_env.get_config().get_configuration().set_string("pipeline.classpaths", "file:///my/jar/path/connector.jar;file:///my/jar/path/udf.jar")
+# NOTE: The paths must specify a protocol (e.g. file:/) and users should ensure that the URLs are accessible on both the client and the cluster.
+table_env.get_config().get_configuration().set_string("pipeline.classpaths", "file:/my/jar/path/connector.jar;file:/my/jar/path/udf.jar")
 ```
 
 or in the Python DataStream API as following:
 
 ```python
 # Use the add_jars() to add local jars and the jars will be uploaded to the cluster.
-# NOTE: Only local file URLs (start with "file://") are supported.
-stream_execution_environment.add_jars("file:///my/jar/path/connector1.jar", "file:///my/jar/path/connector2.jar")
+# NOTE: Only local file URLs (start with "file:/") are supported.
+stream_execution_environment.add_jars("file:/my/jar/path/connector1.jar", "file:/my/jar/path/connector2.jar")
 
 # Use the add_classpaths() to add the dependent jars URLs into the classpath.
 # The URLs will also be added to the classpath of both the client and the cluster.
-# NOTE: The paths must specify a protocol (e.g. file://) and users should ensure that the 
+# NOTE: The paths must specify a protocol (e.g. file:/) and users should ensure that the 
 # URLs are accessible on both the client and the cluster.
-stream_execution_environment.add_classpaths("file:///my/jar/path/connector1.jar", "file:///my/jar/path/connector2.jar")
+stream_execution_environment.add_classpaths("file:/my/jar/path/connector1.jar", "file:/my/jar/path/connector2.jar")
 ```
 
 or through the [command line arguments]({{< ref "docs/deployment/cli" >}}#submitting-pyflink-jobs) `--jarfile` when submitting the job.
